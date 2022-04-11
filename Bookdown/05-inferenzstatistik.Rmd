@@ -1,0 +1,11 @@
+# Inferenzstatistik
+
+## t-Tests
+
+## ANOVA 
+
+### Between Subject 
+
+### Within Subject
+
+## Regression 

@@ -1,0 +1,14 @@
+--- 
+title: "R Wissen ABO / WiPsy Uni Trier"
+author: "David Schischke"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook: default
+  #bookdown::pdf_book: default
+documentclass: book
+biblio-style: apalike
+link-citations: yes
+github-repo: daaawit/r-for-psychologists
+description: "Dieses Buch dient als Begleitmaterial für den R Kurs der ABO/WiPsy im Sommersemester 2022"
+---
+

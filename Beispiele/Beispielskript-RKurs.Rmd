@@ -80,6 +80,5 @@ plot <- ggplot(data, aes(x = wt, y = mpg)) +
   geom_point() + 
   geom_smooth(method = "lm")
 
-
 ggplotly(plot)
 ```
