@@ -1,0 +1,85 @@
+---
+title: "Beispiel-Bericht"
+author: "David Schischke"
+date: "11. April 2022"
+output: 
+  html_document:
+    theme: simplex
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
+library(dplyr)
+library(ABOHiwi)
+library(knitr)
+library(DT)
+library(ggplot2)
+library(plotly)
+```
+
+Dieses Skript dient als Beispiel für ein Skript, das man direkt aus R erstellen kann. Er dient ausschließlich zur Illustration der Funtkionalität und soll keine inhaltlichen Aussagen treffen.
+
+# Daten einlesen
+
+Als Beispieldatensatz nutzen wir den Datensatz `mtcars`, der von R automatisch zur Verfügung gestellt wird und sich mit Reichweiten und Spritverbrauch von Autos beschäftigt. 
+
+```{r}
+data <- mtcars %>% select(mpg, cyl, hp, wt, qsec)
+head(data)
+```
+
+Der Datensatz enthält die folgenden Variablen: 
+
+* mpg: Miles pro Gallone (d.h. Spritverbrauch)
+* cyl: Anzahl an Zylindern
+* hp: PS
+* wt: Gewicht
+* qsec: Zeit für 1/4 Meile (d.h. Beschleunigung)
+
+# Analysen
+
+## Korrelationen
+
+Wir können die Daten jetzt einfach korrelieren. Wir können das z.B. nutzen, um eine Heatmap ausgeben zu lassen: 
+
+```{r, fig.width = 7, fig.height = 7}
+cor <- cor_plot(data, x = colnames(data))
+```
+
+Alternativ können wir die paarweisen Korrelationen auch als Tabelle anzeigen lassen, die sich durchsuchen und sortieren lässt: 
+
+```{r, echo = F}
+cor <- mutate_if(cor, is.numeric, function(x) round(x, 4))
+cor <- cor[-c(1, 6:7, 11:13, 16:19, 21:25),]
+rownames(cor) <- NULL
+```
+
+```{r}
+datatable(cor)
+```
+
+## Regression 
+
+Als Beispiel sagen wir den Verbrauch (mpg) durch das Gewicht (wt) vorher.
+
+```{r}
+reg <- summary(lm(mpg ~ wt, data))
+reg
+```
+
+Wir können sehen, dass der Regressionskoeffizient `r reg$coefficients[2,"Estimate"]` signifikant ist. 
+
+Wir können das Ganze auch grafisch darstellen, und sogar interaktiv visualisieren: 
+
+```{r}
+plot <- ggplot(data, aes(x = wt, y = mpg)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
+
+ggplotly(plot)
+```
